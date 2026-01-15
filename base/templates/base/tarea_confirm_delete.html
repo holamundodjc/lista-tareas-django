@@ -1,0 +1,32 @@
+{% extends 'base/principal.html' %}
+<!-- Este template hereda la estructura base desde 'principal.html' -->
+
+{% block content %}
+<!-- Iniciamos el bloque de contenido que se insertará en el template base -->
+
+<div class="barra-superior">
+    <!-- Barra superior con un enlace para volver a la lista de tareas -->
+    <a href="{% url 'tareas' %}">&#x1F860; Volver</a>
+    <!-- El icono es un carácter Unicode que representa una flecha -->
+</div>
+
+<div class="cuerpo-tarjetas">
+    <!-- Contenedor principal donde se muestra la confirmación de eliminación -->
+
+    <form method="POST">
+        <!-- Formulario que enviará la confirmación mediante POST -->
+
+        {% csrf_token %}
+        <!-- Token de seguridad obligatorio para formularios POST en Django -->
+
+        <p>Vas a eliminar esta tarea: "{{ tarea }}" </p>
+        <!-- Mensaje dinámico que muestra el nombre de la tarea a eliminar -->
+
+        <input class="boton" type="submit" value="Eliminar">
+        <!-- Botón para confirmar la eliminación -->
+    </form>
+
+</div>
+
+{% endblock content %}
+<!-- Fin del bloque de contenido -->

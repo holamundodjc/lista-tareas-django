@@ -1,0 +1,36 @@
+{% extends 'base/principal.html' %}
+<!-- Este template hereda la estructura base desde 'principal.html' -->
+
+{% block content %}
+<!-- Iniciamos el bloque de contenido que se insertará en el template base -->
+
+<div class="barra-superior">
+    <!-- Contenedor superior con el título de la página -->
+    <h1>Ingresar</h1>
+</div>
+
+<div class="cuerpo-tarjetas">
+    <!-- Contenedor principal donde se muestra el formulario de login -->
+
+    <form method="POST">
+        <!-- Formulario que envía los datos mediante POST para mayor seguridad -->
+
+        {% csrf_token %}
+        <!-- Token de seguridad obligatorio en Django para evitar ataques CSRF -->
+
+        {{ form.as_p }}
+        <!-- Renderiza automáticamente los campos del formulario dentro de etiquetas <p> -->
+
+        <input class="boton" type="submit" value="Ingresar">
+        <!-- Botón para enviar el formulario -->
+    </form>
+
+    <p>
+        No tienes una cuenta?
+        <a href="{% url 'registro' %}">Registrate</a>
+        <!-- Enlace a la vista de registro usando el nombre de URL 'registro' -->
+    </p>
+</div>
+
+{% endblock content %}
+<!-- Fin del bloque de contenido -->

@@ -1,0 +1,105 @@
+{% extends 'base/principal.html' %}
+<!-- Este template hereda la estructura base desde 'principal.html' -->
+
+{% block content %}
+<!-- Inicio del bloque de contenido que se insertará en el template base -->
+
+<div class="barra-superior">
+    <!-- Contenedor superior con saludo y resumen de tareas -->
+
+    <div>
+        <!-- Saludo personalizado usando el nombre del usuario -->
+        <h1>Hola {{ request.user|title }}</h1>
+
+        <!-- Muestra cuántas tareas incompletas tiene el usuario -->
+        <h3 style="margin:0">
+            Tienes <i>{{ count }}</i> tarea{{ count|pluralize }} incompleta{{ count|pluralize }}
+        </h3>
+    </div>
+
+    {% if request.user.is_authenticated %}
+        <!-- Si el usuario está autenticado, mostramos el botón de cerrar sesión -->
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <!-- Token de seguridad obligatorio -->
+            <button type="submit">Salir</button>
+        </form>
+    {% else %}
+        <!-- Si NO está autenticado, mostramos enlace para iniciar sesión -->
+        <a href="{% url 'login' %}">Ingresar</a>
+    {% endif %}
+</div>
+
+<div id="envoltorio-agregar-buscar">
+    <!-- Contenedor para el buscador y el botón de agregar tarea -->
+
+    <form method="GET" style="margin-top: 20px; display: flex;">
+        <!-- Formulario de búsqueda (usa GET para mantener el valor en la URL) -->
+
+        <input type="text" name="area-buscar" value="{{ valor_buscado }}">
+        <!-- Campo de texto que muestra el último valor buscado -->
+
+        <input class="boton" type="submit" value="Buscar">
+        <!-- Botón para ejecutar la búsqueda -->
+    </form>
+
+    <a id="enlace-agergar" href="{% url 'crear-tarea' %}">&#x1F7A5;</a>
+    <!-- Enlace para crear una nueva tarea (icono Unicode) -->
+</div>
+
+<div class="envoltorio-itmes-tarea">
+    <!-- Contenedor donde se listan todas las tareas -->
+
+    {% for tarea in tareas %}
+    <!-- Recorremos todas las tareas enviadas desde la vista -->
+
+    <div class="envoltorio-tarea">
+        <!-- Contenedor individual de cada tarea -->
+
+        {% if tarea.completo %}
+            <!-- Si la tarea está marcada como completa -->
+
+            <div class="titulo-tarea">
+                <div class="icono-tarea-completa"></div>
+                <!-- Icono verde indicando tarea completada -->
+
+                <i><s>
+                    <!-- Texto tachado para indicar que está completada -->
+                    <a href="{% url 'editar-tarea' tarea.id %}">{{ tarea }}</a>
+                </s></i>
+            </div>
+
+            <a class="enlace-eliminar" href="{% url 'eliminar-tarea' tarea.id %}">&#x2A2F;</a>
+            <!-- Enlace para eliminar la tarea -->
+
+        {% else %}
+            <!-- Si la tarea NO está completada -->
+
+            <div class="titulo-tarea">
+                <div class="icono-tarea-incompleta"></div>
+                <!-- Icono gris indicando tarea pendiente -->
+
+                <a href="{% url 'editar-tarea' tarea.id %}">{{ tarea }}</a>
+                <!-- Enlace para editar la tarea -->
+            </div>
+
+            <a class="enlace-eliminar" href="{% url 'eliminar-tarea' tarea.id %}">&#x2A2F;</a>
+            <!-- Enlace para eliminar la tarea -->
+        {% endif %}
+    </div>
+
+    {% empty %}
+        <!-- Si no hay tareas en la lista -->
+        <h3>No hay elementos en esta lista</h3>
+    {% endfor %}
+
+</div>
+
+{% endblock content %}
+<!-- Fin del bloque de contenido -->
+
+
+
+
+
+
